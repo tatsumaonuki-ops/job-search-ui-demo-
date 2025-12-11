@@ -140,13 +140,34 @@
     .range-display {
       font-weight: 600;
     }
-    .range-inputs {
-      display: flex;
-      flex-direction: column;
-      gap: 4px;
-    }
-    input[type="range"] {
-      width: 100%;
+  .range-inputs {
+  position: relative;
+  height: 28px;        /* スライダー1本分の高さ */
+}
+
+/* 2本のrangeを同じ位置に重ねて表示 */
+.range-inputs input[type="range"] {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 50%;
+  transform: translateY(-50%);
+  margin: 0;
+  width: 100%;
+  background: transparent;   /* 背景消す */
+  pointer-events: none;      /* 棒部分はクリック不可 */
+}
+
+/* つまみだけ操作できるようにする（Chrome系） */
+.range-inputs input[type="range"]::-webkit-slider-thumb {
+  pointer-events: auto;
+}
+
+/* Firefox用 */
+.range-inputs input[type="range"]::-moz-range-thumb {
+  pointer-events: auto;
+}
+
     }
     .section-caption {
       font-size: 11px;
