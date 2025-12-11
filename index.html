@@ -353,23 +353,29 @@
         </div>
 
         <!-- 希望年収（上限のみ） -->
-        <div class="field-group">
-          <label class="field-label">希望年収（上限）</label>
-          <div class="range-row">
-            <span class="range-label">300〜2,000万円</span>
-            <span class="range-display" id="salaryDisplay">現在：〜1,000万円</span>
-          </div>
-          <div class="range-single">
-            <input
-              type="range"
-              id="salaryRange"
-              min="300"
-              max="2000"
-              step="50"
-              value="1000"
-            />
-          </div>
-        </div>
+       <div class="field-group">
+  <label class="field-label">希望年収（上限）</label>
+  <div class="range-row">
+    <span class="range-label">300〜2,000万円</span>
+    <span class="range-display" id="salaryDisplay">現在：〜1,000万円</span>
+  </div>
+  <div class="range-single">
+    <input
+      type="range"
+      id="salaryRange"
+      min="300"
+      max="2000"
+      step="50"
+      value="1000"
+    />
+  </div>
+  <!-- ここを新しく追加 -->
+  <div class="range-scale">
+    <span>300万</span>
+    <span>1,000万</span>
+    <span>2,000万</span>
+  </div>
+</div>
 
         <!-- OpenWork レーティング -->
         <div class="field-group">
