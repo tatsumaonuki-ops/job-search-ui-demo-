@@ -2,319 +2,586 @@
 <html lang="ja">
 <head>
   <meta charset="UTF-8" />
-  <title>転職版スーモっぽいUIサンプル</title>
+  <title>不動産営業特化｜都内求人検索UIデモ</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
   <style>
     body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      background: #f5f7fb;
       margin: 0;
-      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-      background: #f5f5f5;
-    }
-    header {
-      background: #00c17b;
-      padding: 16px 24px;
-      color: #fff;
-    }
-    header h1 {
-      margin: 0 0 8px;
-      font-size: 20px;
-      font-weight: 700;
-    }
-    .search-bar {
-      display: flex;
-      gap: 8px;
-      flex-wrap: wrap;
-    }
-    .search-bar input,
-    .search-bar select,
-    .search-bar button {
-      padding: 8px 10px;
-      border-radius: 4px;
-      border: none;
-      font-size: 14px;
-    }
-    .search-bar input,
-    .search-bar select {
-      min-width: 180px;
-    }
-    .search-bar button {
-      background: #fff;
-      color: #00a96a;
-      font-weight: 600;
-      cursor: pointer;
+      padding: 0;
+      color: #1f2933;
     }
     .container {
-      display: grid;
-      grid-template-columns: 260px 1fr;
-      gap: 16px;
-      padding: 16px 24px 32px;
-      box-sizing: border-box;
+      max-width: 1120px;
+      margin: 0 auto;
+      padding: 24px 16px 40px;
     }
-    .sidebar {
-      background: #fff;
-      border-radius: 8px;
-      padding: 12px 12px 16px;
-      box-shadow: 0 1px 3px rgba(0,0,0,0.06);
-      font-size: 13px;
+    h1 {
+      font-size: 22px;
+      margin-bottom: 8px;
     }
-    .sidebar h2 {
-      font-size: 14px;
-      margin: 4px 0 8px;
-      border-left: 3px solid #00c17b;
-      padding-left: 6px;
-      font-weight: 700;
-    }
-    .filter-group {
-      margin-bottom: 12px;
-    }
-    .filter-group label {
-      display: block;
-      margin-bottom: 4px;
-      font-weight: 600;
-    }
-    .filter-group select,
-    .filter-group input {
-      width: 100%;
-      padding: 6px 8px;
-      font-size: 13px;
-      border-radius: 4px;
-      border: 1px solid #ddd;
-      box-sizing: border-box;
-    }
-    .content {
-      display: flex;
-      flex-direction: column;
-      gap: 12px;
-    }
-    .content-header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      font-size: 13px;
-    }
-    .sort-select {
-      padding: 6px 8px;
-      border-radius: 4px;
-      border: 1px solid #ddd;
-      font-size: 13px;
-    }
-    .job-card {
-      background: #fff;
-      border-radius: 8px;
-      padding: 12px 14px;
-      box-shadow: 0 1px 3px rgba(0,0,0,0.06);
-      display: flex;
-      flex-direction: column;
-      gap: 4px;
-    }
-    .job-header {
-      display: flex;
-      justify-content: space-between;
-      gap: 8px;
-    }
-    .job-title {
-      font-size: 15px;
-      font-weight: 700;
-      color: #333;
-    }
-    .company {
-      font-size: 13px;
-      color: #555;
-    }
-    .job-meta {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 8px;
+    .sub {
       font-size: 12px;
-      color: #666;
+      color: #6b7280;
+      margin-bottom: 24px;
     }
-    .tag-list {
+    .layout {
+      display: grid;
+      grid-template-columns: 340px 1fr;
+      gap: 24px;
+    }
+    @media (max-width: 900px) {
+      .layout {
+        grid-template-columns: 1fr;
+      }
+    }
+    .panel {
+      background: #ffffff;
+      border-radius: 12px;
+      padding: 16px 18px 18px;
+      box-shadow: 0 8px 20px rgba(15, 23, 42, 0.07);
+    }
+    .panel-title {
+      font-size: 14px;
+      font-weight: 600;
+      margin-bottom: 8px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .panel-title span.badge {
+      font-size: 10px;
+      padding: 2px 6px;
+      border-radius: 999px;
+      background: #eff6ff;
+      color: #2563eb;
+    }
+    .field-group {
+      margin-bottom: 16px;
+    }
+    .field-label {
+      font-size: 12px;
+      font-weight: 600;
+      margin-bottom: 6px;
+      display: block;
+    }
+    .chips {
       display: flex;
       flex-wrap: wrap;
       gap: 6px;
-      margin-top: 4px;
     }
-    .tag {
+    .chip {
       font-size: 11px;
-      padding: 3px 6px;
+      padding: 4px 8px;
       border-radius: 999px;
-      background: #e6f7f0;
-      color: #008c5a;
+      border: 1px solid #d1d5db;
+      background: #f9fafb;
+      cursor: pointer;
+      user-select: none;
+    }
+    .chip input {
+      display: none;
+    }
+    .chip.active {
+      background: #2563eb;
+      color: #fff;
+      border-color: #2563eb;
+    }
+    select, input[type="text"] {
+      width: 100%;
+      padding: 6px 8px;
+      border-radius: 8px;
+      border: 1px solid #d1d5db;
+      font-size: 12px;
+      box-sizing: border-box;
+      background: #ffffff;
+    }
+    .range-row {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 11px;
+    }
+    .range-label {
+      white-space: nowrap;
+      color: #6b7280;
+    }
+    .range-display {
       font-weight: 600;
+      font-size: 11px;
+    }
+    .range-inputs {
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+      flex: 1;
+    }
+    input[type="range"] {
+      width: 100%;
+    }
+    .submit-row {
+      margin-top: 12px;
+      display: flex;
+      gap: 8px;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+    }
+    .btn-primary {
+      background: #2563eb;
+      color: #fff;
+      border: none;
+      border-radius: 999px;
+      padding: 8px 16px;
+      font-size: 12px;
+      font-weight: 600;
+      cursor: pointer;
+    }
+    .btn-outline {
+      background: #ffffff;
+      border-radius: 999px;
+      border: 1px solid #d1d5db;
+      padding: 6px 10px;
+      font-size: 11px;
+      cursor: pointer;
+      color: #4b5563;
+    }
+    .summary-small {
+      font-size: 11px;
+      color: #6b7280;
+    }
+    /* job list */
+    .results-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 12px;
+      margin-bottom: 8px;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+    .sort-select {
+      font-size: 11px;
+      padding: 4px 8px;
+      border-radius: 999px;
+      border: 1px solid #d1d5db;
+      background: #f9fafb;
+    }
+    .job-card {
+      background: #ffffff;
+      border-radius: 12px;
+      padding: 14px 16px;
+      margin-bottom: 10px;
+      border: 1px solid #e5e7eb;
+    }
+    .job-title {
+      font-size: 14px;
+      font-weight: 600;
+      margin-bottom: 4px;
+    }
+    .job-meta {
+      font-size: 11px;
+      color: #6b7280;
+      margin-bottom: 4px;
+    }
+    .job-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 4px;
+      margin-bottom: 6px;
+    }
+    .job-tag {
+      font-size: 10px;
+      padding: 2px 6px;
+      border-radius: 999px;
+      background: #eff6ff;
+      color: #1d4ed8;
+    }
+    .job-desc {
+      font-size: 11px;
+      color: #4b5563;
+      margin-bottom: 8px;
     }
     .job-footer {
       display: flex;
-      justify-content: flex-end;
-      margin-top: 6px;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 11px;
     }
-    .detail-button {
-      padding: 6px 10px;
-      font-size: 12px;
+    .btn-detail {
       border-radius: 999px;
       border: none;
-      background: #00c17b;
+      background: #111827;
       color: #fff;
+      padding: 6px 12px;
+      font-size: 11px;
       cursor: pointer;
     }
     .pagination {
       display: flex;
       justify-content: center;
       gap: 4px;
+      font-size: 11px;
       margin-top: 8px;
-      font-size: 13px;
     }
-    .page-btn {
+    .pagination span {
       padding: 4px 8px;
-      border-radius: 4px;
-      border: 1px solid #ddd;
-      background: #fff;
+      border-radius: 999px;
       cursor: pointer;
     }
-    .page-btn.active {
-      background: #00c17b;
+    .pagination span.active {
+      background: #111827;
       color: #fff;
-      border-color: #00c17b;
     }
 
-    @media (max-width: 840px) {
-      .container {
-        grid-template-columns: 1fr;
-      }
+    .section-caption {
+      font-size: 11px;
+      color: #9ca3af;
+      margin-bottom: 4px;
+    }
+    .section-sep {
+      border-top: 1px dashed #e5e7eb;
+      margin: 10px 0;
     }
   </style>
 </head>
 <body>
-  <header>
-    <h1>〇〇転職エージェント｜求人検索</h1>
-    <div class="search-bar">
-      <input type="text" placeholder="キーワード（職種名・スキルなど）" />
-      <input type="text" placeholder="勤務地（例：渋谷、東京、リモート）" />
-      <select>
-        <option>希望年収を選択</option>
-        <option>〜400万円</option>
-        <option>400〜600万円</option>
-        <option>600〜800万円</option>
-        <option>800万円〜</option>
-      </select>
-      <button>この条件で検索</button>
-    </div>
-  </header>
+  <div class="container">
+    <h1>都内不動産営業の求人検索</h1>
+    <div class="sub">「転職版スーモ」っぽく、不動産営業×都内エリアに特化した検索UIデモ</div>
 
-  <main class="container">
-    <aside class="sidebar">
-      <h2>条件を絞り込む</h2>
+    <div class="layout">
+      <!-- 左カラム：検索条件 -->
+      <aside class="panel">
+        <div class="panel-title">
+          絞り込み条件
+          <span class="badge">都内・不動産営業特化</span>
+        </div>
 
-      <div class="filter-group">
-        <label>雇用形態</label>
-        <select>
-          <option>指定なし</option>
-          <option>正社員</option>
-          <option>契約社員</option>
-          <option>業務委託</option>
-        </select>
-      </div>
+        <!-- 勤務地（区） -->
+        <div class="field-group">
+          <label class="field-label">勤務地（区で選ぶ）</label>
+          <div class="chips" id="wardChips">
+            <label class="chip"><input type="checkbox" value="千代田区">千代田区</label>
+            <label class="chip"><input type="checkbox" value="中央区">中央区</label>
+            <label class="chip"><input type="checkbox" value="港区">港区</label>
+            <label class="chip"><input type="checkbox" value="新宿区">新宿区</label>
+            <label class="chip"><input type="checkbox" value="渋谷区">渋谷区</label>
+            <label class="chip"><input type="checkbox" value="豊島区">豊島区</label>
+            <label class="chip"><input type="checkbox" value="品川区">品川区</label>
+            <label class="chip"><input type="checkbox" value="目黒区">目黒区</label>
+            <label class="chip"><input type="checkbox" value="世田谷区">世田谷区</label>
+          </div>
+        </div>
 
-      <div class="filter-group">
-        <label>職種</label>
-        <select>
-          <option>指定なし</option>
-          <option>マーケティング</option>
-          <option>エンジニア</option>
-          <option>営業</option>
-          <option>バックオフィス</option>
-        </select>
-      </div>
+        <!-- 最寄り駅 -->
+        <div class="field-group">
+          <label class="field-label">最寄り駅（任意）</label>
+          <input type="text" list="stations" placeholder="例：渋谷、新宿、東京 など" />
+          <datalist id="stations">
+            <option value="渋谷駅"></option>
+            <option value="新宿駅"></option>
+            <option value="東京駅"></option>
+            <option value="恵比寿駅"></option>
+            <option value="表参道駅"></option>
+            <option value="銀座駅"></option>
+            <option value="池袋駅"></option>
+            <option value="品川駅"></option>
+          </datalist>
+        </div>
 
-      <div class="filter-group">
-        <label>働き方</label>
-        <select>
-          <option>指定なし</option>
-          <option>フルリモート可</option>
-          <option>一部リモート</option>
-          <option>出社メイン</option>
-        </select>
-      </div>
+        <!-- 年収レンジ -->
+        <div class="field-group">
+          <label class="field-label">希望年収レンジ</label>
+          <div class="range-row">
+            <span class="range-label">300〜2,000万円</span>
+            <span class="range-display" id="salaryDisplay">現在：400〜1,200万円</span>
+          </div>
+          <div class="range-inputs">
+            <input type="range" id="salaryMin" min="300" max="2000" step="50" value="400" />
+            <input type="range" id="salaryMax" min="300" max="2000" step="50" value="1200" />
+          </div>
+        </div>
 
-      <div class="filter-group">
-        <label>キーワード含む会社特徴</label>
-        <input type="text" placeholder="例）スタートアップ、上場、SaaS" />
-      </div>
-    </aside>
+        <!-- OpenWork レーティング -->
+        <div class="field-group">
+          <label class="field-label">OpenWork 総合評価</label>
+          <select id="openworkSelect">
+            <option value="">指定なし</option>
+            <option value="3.0">★3.0以上</option>
+            <option value="3.5">★3.5以上</option>
+            <option value="4.0">★4.0以上（ハイレート）</option>
+          </select>
+          <div class="section-caption">※実データ連携を想定したサンプル項目です</div>
+        </div>
 
-    <section class="content">
-      <div class="content-header">
-        <div>検索結果：<strong>123件</strong></div>
-        <div>
-          並び替え：
-          <select class="sort-select">
-            <option>おすすめ順</option>
-            <option>新着順</option>
-            <option>年収が高い順</option>
+        <div class="section-sep"></div>
+        <div class="section-caption">不動産営業ならではの条件</div>
+
+        <!-- ノルマ強度 -->
+        <div class="field-group">
+          <label class="field-label">ノルマの強さ</label>
+          <div class="chips">
+            <label class="chip"><input type="radio" name="norma" value="">指定なし</label>
+            <label class="chip"><input type="radio" name="norma" value="light">ゆるめ</label>
+            <label class="chip"><input type="radio" name="norma" value="normal">通常</label>
+            <label class="chip"><input type="radio" name="norma" value="hard">ガチ営業</label>
+          </div>
+        </div>
+
+        <!-- 歩合・インセン -->
+        <div class="field-group">
+          <label class="field-label">インセンティブ・歩合</label>
+          <div class="chips">
+            <label class="chip"><input type="checkbox" value="high-incentive">高歩合あり</label>
+            <label class="chip"><input type="checkbox" value="guarantee">最低保証あり</label>
+            <label class="chip"><input type="checkbox" value="base-plus">固定＋歩合</label>
+          </div>
+        </div>
+
+        <!-- 労働時間 -->
+        <div class="field-group">
+          <label class="field-label">残業時間の目安</label>
+          <select>
+            <option>指定なし</option>
+            <option>月20時間以下</option>
+            <option>月40時間以下</option>
+            <option>それ以上でもOK</option>
           </select>
         </div>
-      </div>
 
-      <!-- 求人カード例 -->
-      <article class="job-card">
-        <div class="job-header">
-          <div>
-            <div class="job-title">自社プロダクトのマーケティング担当</div>
-            <div class="company">株式会社サンプルテック｜従業員300名・SaaS</div>
-          </div>
-          <div class="job-meta">
-            <span>年収：500〜750万円</span>
-            <span>勤務地：東京（渋谷）</span>
-            <span>フルリモート可</span>
+        <!-- 休日形態 -->
+        <div class="field-group">
+          <label class="field-label">休日・働き方</label>
+          <div class="chips">
+            <label class="chip"><input type="checkbox" value="shu2">完全週休2日</label>
+            <label class="chip"><input type="checkbox" value="suimon">水日休みOK</label>
+            <label class="chip"><input type="checkbox" value="nichi-getsu">日・月休みOK</label>
           </div>
         </div>
-        <div class="tag-list">
-          <span class="tag">自社プロダクト</span>
-          <span class="tag">マーケティング</span>
-          <span class="tag">SaaS</span>
-          <span class="tag">裁量大きめ</span>
-        </div>
-        <div style="font-size: 12px; color:#555; margin-top:4px;">
-          SNS・広告運用を中心にリード獲得〜ナーチャリングまで一気通貫でお任せ。
-          経営陣と距離が近く、戦略立案から関われるポジションです。
-        </div>
-        <div class="job-footer">
-          <button class="detail-button">求人の詳細を見る</button>
-        </div>
-      </article>
 
-      <!-- 擬似的にもう1件 -->
-      <article class="job-card">
-        <div class="job-header">
-          <div>
-            <div class="job-title">D2CブランドのECマーケティング責任者</div>
-            <div class="company">株式会社ネクストリテール｜売上50億規模</div>
-          </div>
-          <div class="job-meta">
-            <span>年収：700〜900万円</span>
-            <span>勤務地：東京（フルリモート可）</span>
+        <div class="submit-row">
+          <button class="btn-primary">この条件で検索</button>
+          <button class="btn-outline" type="button" id="resetBtn">条件をリセット</button>
+          <div class="summary-small" id="summaryText">
+            現在：渋谷区／年収400〜1,200万／★3.0以上 など
           </div>
         </div>
-        <div class="tag-list">
-          <span class="tag">D2C</span>
-          <span class="tag">EC</span>
-          <span class="tag">責任者ポジション</span>
-        </div>
-        <div style="font-size: 12px; color:#555; margin-top:4px;">
-          自社コスメブランドの売上最大化に向け、SNS・広告・CRMなど
-          全チャネルの戦略立案〜実行までリードいただきます。
-        </div>
-        <div class="job-footer">
-          <button class="detail-button">求人の詳細を見る</button>
-        </div>
-      </article>
+      </aside>
 
-      <div class="pagination">
-        <button class="page-btn">&laquo;</button>
-        <button class="page-btn active">1</button>
-        <button class="page-btn">2</button>
-        <button class="page-btn">3</button>
-        <button class="page-btn">&raquo;</button>
-      </div>
-    </section>
-  </main>
+      <!-- 右カラム：求人一覧 -->
+      <main>
+        <div class="panel">
+          <div class="results-header">
+            <div>検索結果：23件（都内不動産営業・中途）</div>
+            <select class="sort-select">
+              <option>おすすめ順</option>
+              <option>年収が高い順</option>
+              <option>OpenWork評価順</option>
+              <option>残業時間が短い順</option>
+            </select>
+          </div>
+
+          <!-- 求人カード1 -->
+          <article class="job-card">
+            <div class="job-title">完全反響型の不動産営業｜渋谷区</div>
+            <div class="job-meta">
+              株式会社レジデンスリンク｜渋谷区（渋谷駅 徒歩5分）｜OpenWork ★3.6
+            </div>
+            <div class="job-meta">
+              年収：500〜1,200万円（平均年収830万円）／雇用形態：正社員
+            </div>
+            <div class="job-tags">
+              <span class="job-tag">売買仲介</span>
+              <span class="job-tag">完全反響</span>
+              <span class="job-tag">高歩合あり</span>
+              <span class="job-tag">残業月20h以下</span>
+            </div>
+            <div class="job-desc">
+              Webや紹介からの問い合わせに対応する反響営業スタイル。飛び込み・テレアポは原則なしで、
+              顧客対応と提案に集中できます。固定給＋歩合で、成果に応じて年収1,000万円超も狙えます。
+            </div>
+            <div class="job-footer">
+              <span>勤務地：渋谷区｜最寄り：渋谷駅／表参道駅</span>
+              <button class="btn-detail">求人の詳細を見る</button>
+            </div>
+          </article>
+
+          <!-- 求人カード2 -->
+          <article class="job-card">
+            <div class="job-title">投資用マンションの提案営業｜千代田区</div>
+            <div class="job-meta">
+              株式会社アセットブリッジ｜千代田区（東京駅 徒歩7分）｜OpenWork ★3.2
+            </div>
+            <div class="job-meta">
+              年収：600〜1,500万円（上位20％は年収1,800万超）／雇用形態：正社員
+            </div>
+            <div class="job-tags">
+              <span class="job-tag">投資用不動産</span>
+              <span class="job-tag">ガチ営業</span>
+              <span class="job-tag">固定＋高歩合</span>
+              <span class="job-tag">研修充実</span>
+            </div>
+            <div class="job-desc">
+              個人投資家向けに都心エリアの投資用マンションを提案。数字へのコミットは求められる一方で、
+              明確な評価制度と高水準のインセンティブが特徴。20代で年収2,000万プレーヤーも在籍しています。
+            </div>
+            <div class="job-footer">
+              <span>勤務地：千代田区｜最寄り：東京駅／大手町駅</span>
+              <button class="btn-detail">求人の詳細を見る</button>
+            </div>
+          </article>
+
+          <!-- 求人カード3 -->
+          <article class="job-card">
+            <div class="job-title">賃貸仲介営業（若手育成枠）｜中央区</div>
+            <div class="job-meta">
+              株式会社シティライフパートナーズ｜中央区（銀座駅 徒歩3分）｜OpenWork ★3.9
+            </div>
+            <div class="job-meta">
+              年収：350〜700万円／完全週休2日／残業月15h程度
+            </div>
+            <div class="job-tags">
+              <span class="job-tag">賃貸仲介</span>
+              <span class="job-tag">20代歓迎</span>
+              <span class="job-tag">ノルマゆるめ</span>
+              <span class="job-tag">ワークライフバランス重視</span>
+            </div>
+            <div class="job-desc">
+              来店・Webお問い合わせ中心の賃貸仲介営業。1年目は研修とロープレが手厚く、
+              不動産未経験でも宅建取得やキャリアアップを目指せる環境です。土日どちらか休みの相談も可能。
+            </div>
+            <div class="job-footer">
+              <span>勤務地：中央区｜最寄り：銀座駅／有楽町駅</span>
+              <button class="btn-detail">求人の詳細を見る</button>
+            </div>
+          </article>
+
+          <div class="pagination">
+            <span class="active">1</span>
+            <span>2</span>
+            <span>3</span>
+            <span>…</span>
+          </div>
+        </div>
+      </main>
+    </div>
+  </div>
+
+  <script>
+    // 年収スライダー表示更新
+    const minInput = document.getElementById('salaryMin');
+    const maxInput = document.getElementById('salaryMax');
+    const salaryDisplay = document.getElementById('salaryDisplay');
+    const summaryText = document.getElementById('summaryText');
+    const openworkSelect = document.getElementById('openworkSelect');
+    const wardChips = document.getElementById('wardChips');
+    const resetBtn = document.getElementById('resetBtn');
+
+    function syncSalary() {
+      let minVal = Number(minInput.value);
+      let maxVal = Number(maxInput.value);
+      if (minVal > maxVal) {
+        // クロスしたら自動で補正
+        [minVal, maxVal] = [maxVal, minVal];
+        minInput.value = minVal;
+        maxInput.value = maxVal;
+      }
+      salaryDisplay.textContent = `現在：${minVal}〜${maxVal}万円`;
+      updateSummary();
+    }
+
+    function updateSummary() {
+      // 区
+      const activeWards = Array.from(
+        wardChips.querySelectorAll('.chip input:checked')
+      ).map((i) => i.value);
+      const wardPart = activeWards.length
+        ? `${activeWards.slice(0, 2).join('・')}${activeWards.length > 2 ? ' ほか' : ''}`
+        : 'エリア指定なし';
+
+      // 年収
+      const minVal = minInput.value;
+      const maxVal = maxInput.value;
+      const salaryPart = `年収${minVal}〜${maxVal}万`;
+
+      // OpenWork
+      const ow = openworkSelect.value;
+      const owPart = ow ? `OpenWork★${ow}以上` : '評価指定なし';
+
+      summaryText.textContent = `現在：${wardPart}／${salaryPart}／${owPart}`;
+    }
+
+    minInput.addEventListener('input', syncSalary);
+    maxInput.addEventListener('input', syncSalary);
+    openworkSelect.addEventListener('change', updateSummary);
+
+    // チップの ON/OFF 表示
+    document.addEventListener('click', (e) => {
+      const chip = e.target.closest('.chip');
+      if (!chip) return;
+
+      const input = chip.querySelector('input');
+      if (!input) return;
+
+      if (input.type === 'radio') {
+        // 同じ name の chip を全解除
+        const name = input.name;
+        document
+          .querySelectorAll(`input[type="radio"][name="${name}"]`)
+          .forEach((radio) => {
+            const parentChip = radio.closest('.chip');
+            if (parentChip) parentChip.classList.remove('active');
+          });
+        input.checked = true;
+        chip.classList.add('active');
+      } else {
+        input.checked = !input.checked;
+        chip.classList.toggle('active', input.checked);
+      }
+      if (chip.parentElement === wardChips) {
+        updateSummary();
+      }
+    });
+
+    // リセットボタン
+    resetBtn.addEventListener('click', () => {
+      // 区
+      wardChips.querySelectorAll('input[type="checkbox"]').forEach((i) => {
+        i.checked = false;
+        const c = i.closest('.chip');
+        if (c) c.classList.remove('active');
+      });
+      // 年収
+      minInput.value = 400;
+      maxInput.value = 1200;
+      // OpenWork
+      openworkSelect.value = '';
+      // ノルマ
+      document
+        .querySelectorAll('input[type="radio"][name="norma"]')
+        .forEach((r) => {
+          r.checked = false;
+          const c = r.closest('.chip');
+          if (c) c.classList.remove('active');
+        });
+      // その他の chip
+      document
+        .querySelectorAll('.chip input[type="checkbox"]:not(#wardChips input)')
+        .forEach((i) => {
+          if (!wardChips.contains(i)) {
+            i.checked = false;
+            const c = i.closest('.chip');
+            if (c) c.classList.remove('active');
+          }
+        });
+
+      syncSalary();
+    });
+
+    // 初期表示
+    syncSalary();
+  </script>
 </body>
 </html>
