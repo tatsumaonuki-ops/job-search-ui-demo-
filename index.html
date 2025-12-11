@@ -1,0 +1,320 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8" />
+  <title>転職版スーモっぽいUIサンプル</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      background: #f5f5f5;
+    }
+    header {
+      background: #00c17b;
+      padding: 16px 24px;
+      color: #fff;
+    }
+    header h1 {
+      margin: 0 0 8px;
+      font-size: 20px;
+      font-weight: 700;
+    }
+    .search-bar {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+    .search-bar input,
+    .search-bar select,
+    .search-bar button {
+      padding: 8px 10px;
+      border-radius: 4px;
+      border: none;
+      font-size: 14px;
+    }
+    .search-bar input,
+    .search-bar select {
+      min-width: 180px;
+    }
+    .search-bar button {
+      background: #fff;
+      color: #00a96a;
+      font-weight: 600;
+      cursor: pointer;
+    }
+    .container {
+      display: grid;
+      grid-template-columns: 260px 1fr;
+      gap: 16px;
+      padding: 16px 24px 32px;
+      box-sizing: border-box;
+    }
+    .sidebar {
+      background: #fff;
+      border-radius: 8px;
+      padding: 12px 12px 16px;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.06);
+      font-size: 13px;
+    }
+    .sidebar h2 {
+      font-size: 14px;
+      margin: 4px 0 8px;
+      border-left: 3px solid #00c17b;
+      padding-left: 6px;
+      font-weight: 700;
+    }
+    .filter-group {
+      margin-bottom: 12px;
+    }
+    .filter-group label {
+      display: block;
+      margin-bottom: 4px;
+      font-weight: 600;
+    }
+    .filter-group select,
+    .filter-group input {
+      width: 100%;
+      padding: 6px 8px;
+      font-size: 13px;
+      border-radius: 4px;
+      border: 1px solid #ddd;
+      box-sizing: border-box;
+    }
+    .content {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+    .content-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 13px;
+    }
+    .sort-select {
+      padding: 6px 8px;
+      border-radius: 4px;
+      border: 1px solid #ddd;
+      font-size: 13px;
+    }
+    .job-card {
+      background: #fff;
+      border-radius: 8px;
+      padding: 12px 14px;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.06);
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+    .job-header {
+      display: flex;
+      justify-content: space-between;
+      gap: 8px;
+    }
+    .job-title {
+      font-size: 15px;
+      font-weight: 700;
+      color: #333;
+    }
+    .company {
+      font-size: 13px;
+      color: #555;
+    }
+    .job-meta {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      font-size: 12px;
+      color: #666;
+    }
+    .tag-list {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      margin-top: 4px;
+    }
+    .tag {
+      font-size: 11px;
+      padding: 3px 6px;
+      border-radius: 999px;
+      background: #e6f7f0;
+      color: #008c5a;
+      font-weight: 600;
+    }
+    .job-footer {
+      display: flex;
+      justify-content: flex-end;
+      margin-top: 6px;
+    }
+    .detail-button {
+      padding: 6px 10px;
+      font-size: 12px;
+      border-radius: 999px;
+      border: none;
+      background: #00c17b;
+      color: #fff;
+      cursor: pointer;
+    }
+    .pagination {
+      display: flex;
+      justify-content: center;
+      gap: 4px;
+      margin-top: 8px;
+      font-size: 13px;
+    }
+    .page-btn {
+      padding: 4px 8px;
+      border-radius: 4px;
+      border: 1px solid #ddd;
+      background: #fff;
+      cursor: pointer;
+    }
+    .page-btn.active {
+      background: #00c17b;
+      color: #fff;
+      border-color: #00c17b;
+    }
+
+    @media (max-width: 840px) {
+      .container {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>〇〇転職エージェント｜求人検索</h1>
+    <div class="search-bar">
+      <input type="text" placeholder="キーワード（職種名・スキルなど）" />
+      <input type="text" placeholder="勤務地（例：渋谷、東京、リモート）" />
+      <select>
+        <option>希望年収を選択</option>
+        <option>〜400万円</option>
+        <option>400〜600万円</option>
+        <option>600〜800万円</option>
+        <option>800万円〜</option>
+      </select>
+      <button>この条件で検索</button>
+    </div>
+  </header>
+
+  <main class="container">
+    <aside class="sidebar">
+      <h2>条件を絞り込む</h2>
+
+      <div class="filter-group">
+        <label>雇用形態</label>
+        <select>
+          <option>指定なし</option>
+          <option>正社員</option>
+          <option>契約社員</option>
+          <option>業務委託</option>
+        </select>
+      </div>
+
+      <div class="filter-group">
+        <label>職種</label>
+        <select>
+          <option>指定なし</option>
+          <option>マーケティング</option>
+          <option>エンジニア</option>
+          <option>営業</option>
+          <option>バックオフィス</option>
+        </select>
+      </div>
+
+      <div class="filter-group">
+        <label>働き方</label>
+        <select>
+          <option>指定なし</option>
+          <option>フルリモート可</option>
+          <option>一部リモート</option>
+          <option>出社メイン</option>
+        </select>
+      </div>
+
+      <div class="filter-group">
+        <label>キーワード含む会社特徴</label>
+        <input type="text" placeholder="例）スタートアップ、上場、SaaS" />
+      </div>
+    </aside>
+
+    <section class="content">
+      <div class="content-header">
+        <div>検索結果：<strong>123件</strong></div>
+        <div>
+          並び替え：
+          <select class="sort-select">
+            <option>おすすめ順</option>
+            <option>新着順</option>
+            <option>年収が高い順</option>
+          </select>
+        </div>
+      </div>
+
+      <!-- 求人カード例 -->
+      <article class="job-card">
+        <div class="job-header">
+          <div>
+            <div class="job-title">自社プロダクトのマーケティング担当</div>
+            <div class="company">株式会社サンプルテック｜従業員300名・SaaS</div>
+          </div>
+          <div class="job-meta">
+            <span>年収：500〜750万円</span>
+            <span>勤務地：東京（渋谷）</span>
+            <span>フルリモート可</span>
+          </div>
+        </div>
+        <div class="tag-list">
+          <span class="tag">自社プロダクト</span>
+          <span class="tag">マーケティング</span>
+          <span class="tag">SaaS</span>
+          <span class="tag">裁量大きめ</span>
+        </div>
+        <div style="font-size: 12px; color:#555; margin-top:4px;">
+          SNS・広告運用を中心にリード獲得〜ナーチャリングまで一気通貫でお任せ。
+          経営陣と距離が近く、戦略立案から関われるポジションです。
+        </div>
+        <div class="job-footer">
+          <button class="detail-button">求人の詳細を見る</button>
+        </div>
+      </article>
+
+      <!-- 擬似的にもう1件 -->
+      <article class="job-card">
+        <div class="job-header">
+          <div>
+            <div class="job-title">D2CブランドのECマーケティング責任者</div>
+            <div class="company">株式会社ネクストリテール｜売上50億規模</div>
+          </div>
+          <div class="job-meta">
+            <span>年収：700〜900万円</span>
+            <span>勤務地：東京（フルリモート可）</span>
+          </div>
+        </div>
+        <div class="tag-list">
+          <span class="tag">D2C</span>
+          <span class="tag">EC</span>
+          <span class="tag">責任者ポジション</span>
+        </div>
+        <div style="font-size: 12px; color:#555; margin-top:4px;">
+          自社コスメブランドの売上最大化に向け、SNS・広告・CRMなど
+          全チャネルの戦略立案〜実行までリードいただきます。
+        </div>
+        <div class="job-footer">
+          <button class="detail-button">求人の詳細を見る</button>
+        </div>
+      </article>
+
+      <div class="pagination">
+        <button class="page-btn">&laquo;</button>
+        <button class="page-btn active">1</button>
+        <button class="page-btn">2</button>
+        <button class="page-btn">3</button>
+        <button class="page-btn">&raquo;</button>
+      </div>
+    </section>
+  </main>
+</body>
+</html>
