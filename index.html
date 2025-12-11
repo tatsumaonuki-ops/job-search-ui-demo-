@@ -376,6 +376,13 @@
     <span>2,000万</span>
   </div>
 </div>
+.range-scale {
+  display: flex;
+  justify-content: space-between;
+  font-size: 10px;
+  color: #9ca3af;
+  margin-top: 4px;
+}
 
         <!-- OpenWork レーティング -->
         <div class="field-group">
@@ -644,10 +651,11 @@
     }
 
     function updateSalaryDisplay() {
-      const upper = Number(salaryRange.value);
-      salaryDisplay.textContent = `現在：〜${upper}万円`;
-      updateSummary();
-    }
+  const upper = Number(salaryRange.value);
+  salaryDisplay.textContent = `現在：〜${upper}万円`;
+  updateSummary();   // 表示のサマリー更新
+  applyFilters();    // 求人リストを条件に応じて絞り込む
+}
 
     function updateSummary() {
       const wards = getSelectedWards();
